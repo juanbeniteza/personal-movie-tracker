@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect, useCallback } from "react"
+import { useState, useEffect, useCallback, useRef } from "react"
 import { useRouter } from "next/navigation"
 import Image from "next/image"
 import { XIcon, SearchIcon, CheckIcon, LoaderIcon } from "lucide-react"
@@ -40,6 +40,16 @@ export default function AddMovieDialog() {
   const [watchDate, setWatchDate] = useState(localTodayISO)
   const [isSearching, setIsSearching] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const formRef = useRef<HTMLFormElement>(null)
+
+  // Scroll form into view when a film is selected
+  useEffect(() => {
+    if (selected) {
+      setTimeout(() => {
+        formRef.current?.scrollIntoView({ behavior: "smooth", block: "nearest" })
+      }, 50)
+    }
+  }, [selected])
 
   // Close on ESC
   useEffect(() => {
@@ -269,7 +279,7 @@ export default function AddMovieDialog() {
 
                 {/* Form — visible once a film is selected */}
                 {selected && (
-                  <form onSubmit={handleSubmit} className="px-6 pt-5 pb-6 space-y-4 border-t border-zinc-100 dark:border-zinc-800 mt-3">
+                  <form ref={formRef} onSubmit={handleSubmit} className="px-6 pt-5 pb-6 space-y-4 border-t border-zinc-100 dark:border-zinc-800 mt-3">
                     {/* Selected film summary */}
                     <div className="flex items-center gap-3">
                       {selected.posterUrl && (
