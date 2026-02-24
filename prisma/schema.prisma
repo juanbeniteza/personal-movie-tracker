@@ -1,0 +1,18 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model MovieWatch {
+  id        String   @id @default(uuid())
+  title     String
+  watchDate DateTime
+  platform  String
+  tmdbId    Int?
+  posterUrl String
+  createdAt DateTime @default(now())
+}
